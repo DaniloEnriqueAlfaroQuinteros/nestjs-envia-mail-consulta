@@ -6,9 +6,11 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { DoctoDTO } from './dto/docto.dto';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Docto } from './entities/docto.entity';
 import { DoctoService } from './docto.service';
 import { LoggerService } from '../logger/logger.service';
@@ -37,6 +39,7 @@ export class DoctoController {
 
   @ApiResponse({ status: 200, description: 'Gets one codigo', type: Docto })
   @ApiResponse({ status: 404, description: 'Docto not found' })
+  @UseGuards(JwtAuthGuard)
   @Get(':correlativo')
   findOne(@Param('correlativo') correlativo: string): Promise<Docto> {
     this.logger.info('Getting un docto ' + correlativo);
